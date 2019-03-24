@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_24_130139) do
+ActiveRecord::Schema.define(version: 2019_03_24_164159) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -35,6 +35,26 @@ ActiveRecord::Schema.define(version: 2019_03_24_130139) do
     t.index ["title"], name: "index_movies_on_title", unique: true
   end
 
+  create_table "purchase_line_items", force: :cascade do |t|
+    t.decimal "price", precision: 8, scale: 2, null: false
+    t.string "video_quality", null: false
+    t.string "content_type"
+    t.bigint "content_id"
+    t.bigint "purchase_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_type", "content_id"], name: "index_purchase_line_items_on_content_type_and_content_id"
+    t.index ["purchase_id"], name: "index_purchase_line_items_on_purchase_id"
+  end
+
+  create_table "purchases", force: :cascade do |t|
+    t.decimal "price", precision: 8, scale: 2, null: false
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_purchases_on_user_id"
+  end
+
   create_table "seasons", force: :cascade do |t|
     t.string "title", null: false
     t.text "plot", null: false
@@ -51,4 +71,5 @@ ActiveRecord::Schema.define(version: 2019_03_24_130139) do
   end
 
   add_foreign_key "episodes", "seasons"
+  add_foreign_key "purchases", "users"
 end
