@@ -27,6 +27,17 @@ ActiveRecord::Schema.define(version: 2019_03_24_180941) do
     t.index ["title"], name: "index_episodes_on_title", unique: true
   end
 
+  create_table "libraries", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "content_type"
+    t.bigint "content_id"
+    t.date "expires_on"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_type", "content_id"], name: "index_libraries_on_content_type_and_content_id"
+    t.index ["user_id"], name: "index_libraries_on_user_id"
+  end
+
   create_table "movies", force: :cascade do |t|
     t.string "title", null: false
     t.text "plot", null: false
@@ -72,5 +83,6 @@ ActiveRecord::Schema.define(version: 2019_03_24_180941) do
   end
 
   add_foreign_key "episodes", "seasons"
+  add_foreign_key "libraries", "users"
   add_foreign_key "purchases", "users"
 end
