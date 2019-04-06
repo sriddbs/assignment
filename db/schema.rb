@@ -31,7 +31,8 @@ ActiveRecord::Schema.define(version: 2019_03_24_180941) do
     t.bigint "user_id"
     t.string "content_type"
     t.bigint "content_id"
-    t.date "expires_on"
+    t.date "validity_starts_on"
+    t.date "validity_expires_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["content_type", "content_id"], name: "index_libraries_on_content_type_and_content_id"
@@ -61,7 +62,8 @@ ActiveRecord::Schema.define(version: 2019_03_24_180941) do
   create_table "purchases", force: :cascade do |t|
     t.decimal "price", precision: 8, scale: 2, null: false
     t.bigint "user_id", null: false
-    t.date "expires_on"
+    t.date "validity_starts_on", null: false
+    t.date "validity_expires_on", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_purchases_on_user_id"
