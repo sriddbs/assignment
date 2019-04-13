@@ -7,4 +7,6 @@ class Library < ApplicationRecord
   has_many   :library_contents
   has_many   :movies, through: :library_contents, source: :content, source_type: 'Movie'
   has_many   :seasons, through: :library_contents, source: :content, source_type: 'Season'
+
+  scope :active, -> { where('validity_expires_on >= ?', Date.today) }
 end
