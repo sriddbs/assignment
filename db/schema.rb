@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_24_180941) do
+ActiveRecord::Schema.define(version: 2019_04_11_185205) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,14 +29,21 @@ ActiveRecord::Schema.define(version: 2019_03_24_180941) do
 
   create_table "libraries", force: :cascade do |t|
     t.bigint "user_id"
-    t.string "content_type"
-    t.bigint "content_id"
     t.date "validity_starts_on"
     t.date "validity_expires_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["content_type", "content_id"], name: "index_libraries_on_content_type_and_content_id"
     t.index ["user_id"], name: "index_libraries_on_user_id"
+  end
+
+  create_table "library_contents", force: :cascade do |t|
+    t.bigint "library_id"
+    t.string "content_type"
+    t.bigint "content_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["content_type", "content_id"], name: "index_library_contents_on_content_type_and_content_id"
+    t.index ["library_id"], name: "index_library_contents_on_library_id"
   end
 
   create_table "movies", force: :cascade do |t|
@@ -86,5 +93,6 @@ ActiveRecord::Schema.define(version: 2019_03_24_180941) do
 
   add_foreign_key "episodes", "seasons"
   add_foreign_key "libraries", "users"
+  add_foreign_key "library_contents", "libraries"
   add_foreign_key "purchases", "users"
 end
